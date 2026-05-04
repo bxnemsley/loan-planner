@@ -9,10 +9,8 @@ import java.util.Scanner;
 
 	public class AppLoan {
 		private static final NumberFormat CURRENCY = NumberFormat.getCurrencyInstance(Locale.US);
-
 		public static void main(String[] args) {
 			Scanner scanner = new Scanner(System.in);
-
 			System.out.println("Loan Planner");
 			System.out.println("------------");
 
@@ -27,38 +25,36 @@ import java.util.Scanner;
 			printLoanSummary(loan, calculator);
 			printSchedulePreview(schedule);
 			offerCsvExport(scanner, schedule);
-
 			scanner.close();
 		}
+	private static void printLoanSummary(Loan loan, LoanCalculator calculator) {
+		System.out.println();
+		System.out.println("Loan Summary");
+		System.out.println("------------");
+		System.out.println("Loan amount:       " + CURRENCY.format(loan.getPrincipal()));
+		System.out.println("Interest rate:     " + loan.getAnnualInterestRate() + "%");
+		System.out.println("Term:              " + loan.getTermInYears() + " years");
+		System.out.println("Monthly payment:   " + CURRENCY.format(calculator.calculateMonthlyPayment()));
+		System.out.println("Total paid:        " + CURRENCY.format(calculator.calculateTotalPayment()));
+		System.out.println("Total interest:    " + CURRENCY.format(calculator.calculateTotalInterest()));
+	}
 
-		private static void printLoanSummary(Loan loan, LoanCalculator calculator) {
-			System.out.println();
-			System.out.println("Loan Summary");
-			System.out.println("------------");
-			System.out.println("Loan amount:       " + CURRENCY.format(loan.getPrincipal()));
-			System.out.println("Interest rate:     " + loan.getAnnualInterestRate() + "%");
-			System.out.println("Term:              " + loan.getTermInYears() + " years");
-			System.out.println("Monthly payment:   " + CURRENCY.format(calculator.calculateMonthlyPayment()));
-			System.out.println("Total paid:        " + CURRENCY.format(calculator.calculateTotalPayment()));
-			System.out.println("Total interest:    " + CURRENCY.format(calculator.calculateTotalInterest()));
-		}
-
-		private static void printSchedulePreview(List<PaymentEntry> schedule) {
-			System.out.println();
-			System.out.println("Amortization Schedule Preview");
-			System.out.println("-----------------------------");
+	private static void printSchedulePreview(List<PaymentEntry> schedule) {
+		System.out.println();
+		System.out.println("Amortization Schedule Preview");
+		System.out.println("-----------------------------");
 			System.out.printf("%-8s %-15s %-15s %-15s %-15s%n", "Month", "Payment", "Principal", "Interest",
 					"Balance");
 
-			int previewRows = Math.min(12, schedule.size());
-			for (int i = 0; i < previewRows; i++) {
-				PaymentEntry entry = schedule.get(i);
+		int previewRows = Math.min(12, schedule.size());
+		for (int i = 0; i < previewRows; i++) {
+			PaymentEntry entry = schedule.get(i);
 				System.out.printf("%-8d %-15s %-15s %-15s %-15s%n", entry.getPaymentNumber(),
 						CURRENCY.format(entry.getMonthlyPayment()), CURRENCY.format(entry.getPrincipalPaid()),
 						CURRENCY.format(entry.getInterestPaid()), CURRENCY.format(entry.getRemainingBalance()));
 			}
 
-			if (schedule.size() > previewRows) {
+	if (schedule.size() > previewRows) {
 				System.out.println("... showing first 12 months only");
 			}
 		}
@@ -88,10 +84,8 @@ import java.util.Scanner;
 				}
 			}
 		}
-
 		private static double readPositiveDouble(Scanner scanner, String prompt) {
 			double value = readDouble(scanner, prompt);
-
 			while (value <= 0) {
 				System.out.println("Please enter a number greater than 0.");
 				value = readDouble(scanner, prompt);
